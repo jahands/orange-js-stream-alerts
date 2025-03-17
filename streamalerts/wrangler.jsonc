@@ -1,0 +1,58 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "streamalerts",
+	"account_id": "f9b1e1e2cf50cca79a58e395b6084239", // mai
+	"main": "./app/entry.server.ts",
+	"compatibility_date": "2025-03-12",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": false,
+	"preview_urls": false,
+	"logpush": true,
+	"routes": ["streamalerts.dev/*"],
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1
+	},
+	"placement": {
+		"mode": "smart"
+	},
+	"assets": {
+		"directory": "./dist/client"
+	},
+	"vars": {
+		"NAME": "streamalerts",
+		"ENVIRONMENT": "development", // overridden during deployment
+		"SENTRY_RELEASE": "unknown", // overridden during deployment
+		"AXIOM_DATASET": "workers",
+		"AXIOM_DATASET_OTEL": "workers-otel",
+
+		// 1P-hf1jf (streamalerts-dev)
+		"TWITCH_CLIENT_ID": "2qb2ov68mr9megmkk202a5kho2d8yi"
+	},
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "Scheduler",
+				"class_name": "Scheduler"
+			},
+			{
+				"name": "StreamMonitor",
+				"class_name": "StreamMonitor"
+			},
+			{
+				"name": "TwitchAPI",
+				"class_name": "TwitchAPI"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v2",
+			"new_sqlite_classes": ["Scheduler", "StreamMonitor"]
+		},
+		{
+			"tag": "v3",
+			"new_sqlite_classes": ["TwitchAPI"]
+		}
+	]
+}
